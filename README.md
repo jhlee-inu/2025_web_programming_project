@@ -1,2 +1,3 @@
 # all_of_games
-2025_web_programming_project
+2025 web programming project
+RAWG API를 이용하여 게임 정보에대해 검색하는 사이트를 제작
