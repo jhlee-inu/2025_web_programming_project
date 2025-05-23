@@ -2,15 +2,17 @@ import { useState, useRef, useEffect } from "react";
 import { FaGamepad, FaStar, FaMoon, FaSun } from "react-icons/fa";
 import SearchBar from "../components/SearchBar";
 import GameCard from "../components/GameCard";
+import GameDetail from "../components/GameDetail";
+import ReviewSection from "../components/ReviewSection";
 
 export default function Home() {
   const [games, setGames] = useState([]);
   const [selectedGame, setSelectedGame] = useState(null);
   const [searchInput, setSearchInput] = useState("");
+  
   const [favorites, setFavorites] = useState(
     JSON.parse(localStorage.getItem("favorites") || "[]")
   );
-  const [review, setReview] = useState("");
   const [darkMode, setDarkMode] = useState(false);
 
   const topRef = useRef(null);
@@ -95,19 +97,7 @@ export default function Home() {
   // 즐겨찾기 게임 목록을 보여줄지 여부
   const [showFavorites, setShowFavorites] = useState(false);
 
-  // 리뷰 저장: localStorage에 { [gameId]: [리뷰, ...] } 형태로 저장
-  const saveReview = (gameId, reviewText) => {
-    const reviews = JSON.parse(localStorage.getItem("reviews") || "{}");
-    if (!reviews[gameId]) reviews[gameId] = [];
-    reviews[gameId].push(reviewText);
-    localStorage.setItem("reviews", JSON.stringify(reviews));
-  };
 
-  // 특정 게임의 리뷰 목록 가져오기
-  const getReviews = (gameId) => {
-    const reviews = JSON.parse(localStorage.getItem("reviews") || "{}");
-    return reviews[gameId] || [];
-  };
 
   useEffect(() => {
     if (selectedGame && !selectedGame.description_raw) {
@@ -167,242 +157,18 @@ export default function Home() {
           }}
         >
           {/* 게임 상세 */}
-          <div
-            style={{
-              padding: "3rem",
-              backgroundColor: darkMode ? "#2b2b2b" : "#fff",
-              borderRadius: "12px",
-              position: "relative",
-              minWidth: "750px",
-            }}
-          >
-            <button
-              onClick={handleBack}
-              style={{
-                background: "transparent",
-                border: "none",
-                position: "absolute",
-                top: "3px",
-                left: "5px",
-                fontSize: "1.5rem",
-                cursor: "pointer",
-                color: darkMode ? "#fff" : "#000",
-              }}
-            >
-              ✖
-            </button>
-            {selectedGame.short_screenshots?.length > 0 ? (
-              <div
-                style={{
-                  display: "flex",
-                  gap: "16px",
-                  overflowX: "auto",
-                  paddingBottom: "1rem",
-                }}
-              >
-                {selectedGame.short_screenshots.map((s, idx) => (
-                  <img
-                    key={idx}
-                    src={s.image}
-                    alt={`screenshot-${idx}`}
-                    style={{
-                      width: "400px",
-                      height: "170px",
-                      objectFit: "cover",
-                      borderRadius: "8px",
-                      flexShrink: 0,
-                      boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-                    }}
-                  />
-                ))}
-              </div>
-            ) : (
-              <img
-                src={selectedGame.background_image}
-                alt={selectedGame.name}
-                style={{
-                  width: "650px",
-                  height: "370px",
-                  borderRadius: "12px",
-                  marginBottom: "1px",
-                }}
-              />
-            )}
+          
+          <GameDetail
+            selectedGame={ selectedGame}
+            darkMode = {darkMode}
+            handleBack = {handleBack}
+            toggleFavorite = {toggleFavorite}
+            favorites = {favorites}
+          />
 
-            <h2>{selectedGame.name}</h2>
-            <p>
-              <strong>출시일:</strong> {selectedGame.released}
-            </p>
-            <p>
-              <strong>평점:</strong> ⭐ {selectedGame.rating} / 5
-            </p>
-            <p>
-              <strong>평점 수:</strong> {selectedGame.ratings_count}
-            </p>
-            <p>
-              <strong>장르:</strong>{" "}
-              {selectedGame.genres?.map((g) => g.name).join(", ") ||
-                "정보 없음"}
-            </p>
-            <p>
-              <strong>플랫폼:</strong>{" "}
-              {selectedGame.platforms && selectedGame.platforms.length > 0 ? (
-                <>
-                  {selectedGame.platforms
-                    .slice(0, 6)
-                    .map((p) => p.platform.name)
-                    .join(", ")}
-                  {selectedGame.platforms.length > 6 && (
-                    <>
-                      <br />
-                      {selectedGame.platforms
-                        .slice(6)
-                        .map((p) => p.platform.name)
-                        .join(", ")}
-                    </>
-                  )}
-                </>
-              ) : (
-                "정보 없음"
-              )}
-            </p>
-            {selectedGame.description_raw && (
-              <div
-                style={{
-                  margin: "1.5rem 0",
-                  background: darkMode ? "#232323" : "#f7f7f7",
-                  borderRadius: "8px",
-                  padding: "1rem 1.5rem",
-                  fontSize: "1.08rem",
-                  lineHeight: 1.6,
-                  color: darkMode ? "#e0e0e0" : "#222",
-                }}
-              >
-                <strong>게임 줄거리:</strong>
-                <div style={{ marginTop: "0.5rem", whiteSpace: "pre-line" }}>
-                  {selectedGame.description_raw}
-                </div>
-              </div>
-            )}
-            {selectedGame.website && (
-              <div style={{ margin: "1rem 0" }}>
-                <strong>공식 홈페이지:</strong>{" "}
-                <a
-                  href={selectedGame.website}
-                  target="_blank"
-                  rel="noreferrer"
-                  style={{
-                    color: darkMode ? "#7ecfff" : "#0077cc",
-                    textDecoration: "underline",
-                    wordBreak: "break-all",
-                  }}
-                >
-                  {selectedGame.website}
-                </a>
-              </div>
-            )}
-
-            <button onClick={toggleFavorite} style={{ margin: "1rem 0" }}>
-              {favorites.some((fav) => fav.id === selectedGame.id)
-                ? "★ 즐겨찾기 해제"
-                : "☆ 즐겨찾기 추가"}
-            </button>
+            {/* 리뷰 등록/목록: 오른쪽에 배치 */}
+          <ReviewSection selectedGame={selectedGame} darkMode={darkMode}/>
           </div>
-          {/* 리뷰 등록/목록: 오른쪽에 배치 */}
-          <div
-            style={{
-              marginTop: "1rem",
-              display: "flex",
-              flexDirection: "column",
-              gap: "1.5rem",
-            }}
-          >
-            {/* 리뷰 등록창 */}
-            <div
-              style={{
-                background: darkMode ? "#232323" : "#f9f9f9",
-                borderRadius: "12px",
-                padding: "1.5rem",
-                boxShadow: darkMode
-                  ? "0 2px 8px rgba(0,0,0,0.5)"
-                  : "0 2px 8px rgba(0,0,0,0.08)",
-              }}
-            >
-              <h3 style={{ marginTop: 0 }}>리뷰 등록</h3>
-              <textarea
-                placeholder="리뷰를 작성하세요"
-                value={review}
-                onChange={(e) => setReview(e.target.value)}
-                style={{
-                  width: "100%",
-                  height: "80px",
-                  padding: "5px",
-                  margin: "0px",
-                  borderRadius: "8px",
-                  border: "1px solid #ccc",
-                  background: darkMode ? "#222" : "#fff",
-                  color: darkMode ? "#f1f1f1" : "#1a1a1a",
-                }}
-              />
-              <button
-                onClick={() => {
-                  if (review.trim()) {
-                    saveReview(selectedGame.id, review.trim());
-                    setReview("");
-                  }
-                }}
-                style={{
-                  marginTop: "10px",
-                  width: "100%",
-                  padding: "0.5rem",
-                  borderRadius: "8px",
-                  border: "none",
-                  backgroundColor: darkMode ? "#444" : "#dcdcdc",
-                  color: darkMode ? "#f1f1f1" : "#1a1a1a",
-                  cursor: "pointer",
-                  fontWeight: "bold",
-                }}
-              >
-                리뷰 제출
-              </button>
-            </div>
-            {/* 리뷰 목록 */}
-            <div
-              style={{
-                background: darkMode ? "#232323" : "#f9f9f9",
-                borderRadius: "12px",
-                padding: "1.5rem",
-                marginBottom: "1.5rem",
-                boxShadow: darkMode
-                  ? "0 2px 8px rgba(0,0,0,0.5)"
-                  : "0 2px 8px rgba(0,0,0,0.08)",
-                flex: 1,
-                overflowY: "auto",
-                maxHeight: "350px",
-              }}
-            >
-              <h3 style={{ marginTop: 0 }}>리뷰</h3>
-              {getReviews(selectedGame.id).length === 0 ? (
-                <p style={{ color: "#888" }}>아직 리뷰가 없습니다.</p>
-              ) : (
-                getReviews(selectedGame.id).map((r, i) => (
-                  <div
-                    key={i}
-                    style={{
-                      background: darkMode ? "#333" : "#fff",
-                      borderRadius: "8px",
-                      padding: "0.5rem 1rem",
-                      marginBottom: "0.5rem",
-                      fontSize: "0.98rem",
-                    }}
-                  >
-                    {r}
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
-        </div>
       ) : (
         <div>
           <div ref={searchRef}></div>
