@@ -1,0 +1,7 @@
+services:
+  nginx:
+    build:
+      context: ./proxy
+    container_name: nginx-proxy
+    ports:
+      - "8080:80"
