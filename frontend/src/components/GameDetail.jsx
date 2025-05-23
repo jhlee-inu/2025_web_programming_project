@@ -116,7 +116,7 @@ export default function GameDetail({
             color: darkMode ? "#e0e0e0" : "#222",
           }}
         >
-          <strong>게임 줄거리:</strong>
+          <strong>게임 상세정보:</strong>
           <div style={{ marginTop: "0.5rem", whiteSpace: "pre-line" }}>
             {selectedGame.description_raw}
           </div>
@@ -140,7 +140,15 @@ export default function GameDetail({
         </div>
       )}
 
-      <button onClick={toggleFavorite} style={{ margin: "1rem 0" }}>
+      <button
+        onClick={toggleFavorite}
+        style={{
+          margin: "1rem 0",
+          color: darkMode ? "#f1f1f1" : "#1a1a1a",
+          backgroundColor: darkMode ? "#444" : "#dcdcdc",
+        }}
+        className="keyword-button"
+      >
         {favorites.some((fav) => fav.id === selectedGame.id)
           ? "★ 즐겨찾기 해제"
           : "☆ 즐겨찾기 추가"}

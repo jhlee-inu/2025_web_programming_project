@@ -1,13 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function ReviewSection({ selectedGame, darkMode }) {
+  const [username, setUsername] = useState("");
   const [review, setReview] = useState("");
 
-  const saveReview = (gameId, reviewText) => {
+  useEffect(() => {
+    const stored = localStorage.getItem("username");
+    if (stored) setUsername(stored);
+  }, []);
+
+  // 리뷰 저장
+  const saveReview = (gameId, username, reviewText) => {
     const reviews = JSON.parse(localStorage.getItem("reviews") || "{}");
     if (!reviews[gameId]) reviews[gameId] = [];
-    reviews[gameId].push(reviewText);
+    reviews[gameId].push({ user: username, text: reviewText });
     localStorage.setItem("reviews", JSON.stringify(reviews));
+  };
+
+  // 리뷰 삭제
+  const deleteReview = (gameId, index) => {
+    const reviews = JSON.parse(localStorage.getItem("reviews") || "{}");
+    if (!reviews[gameId]) return;
+    reviews[gameId].splice(index, 1);
+    localStorage.setItem("reviews", JSON.stringify(reviews));
+    // 강제 리렌더링 위해 상태 업데이트
+    setReview((r) => r + " ");
+    setReview((r) => r.trim());
   };
 
   const getReviews = (gameId) => {
@@ -53,8 +71,8 @@ export default function ReviewSection({ selectedGame, darkMode }) {
         />
         <button
           onClick={() => {
-            if (review.trim()) {
-              saveReview(selectedGame.id, review.trim());
+            if (review.trim() && username.trim()) {
+              saveReview(selectedGame.id, username, review.trim());
               setReview("");
             }
           }}
@@ -102,9 +120,28 @@ export default function ReviewSection({ selectedGame, darkMode }) {
                 padding: "0.5rem 1rem",
                 marginBottom: "0.5rem",
                 fontSize: "0.98rem",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
               }}
             >
-              {r}
+              <span>
+                <strong>{r.user}:</strong> {r.text}
+              </span>
+              {r.user === username && (
+                <button
+                  onClick={() => deleteReview(selectedGame.id, i)}
+                  style={{
+                    marginLeft: "1rem",
+                    background: "transparent",
+                    border: "none",
+                    color: "red",
+                    cursor: "pointer",
+                  }}
+                >
+                  삭제
+                </button>
+              )}
             </div>
           ))
         )}
