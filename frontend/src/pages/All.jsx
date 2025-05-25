@@ -47,7 +47,17 @@ export default function All() {
     try {
       const res = await fetch(`/api/getGameDetail?id=${id}`);
       const data = await res.json();
-      setSelectedGame((prev) => ({ ...prev, ...data })); // 기존 요약 + 상세 덮어쓰기
+
+      if (!id || !data || data.error) return;
+
+      if (!data.description_raw && !data.website) {
+        // description와 웹사이트 둘다없을때 상태는 유지하고, 표시만 다르게
+        setSelectedGame((prev) => ({ ...prev, ...data, nodetail: true }));
+      } else if (!data.website) { //웹사이트만 없을때 
+        setSelectedGame((prev) => ({ ...prev, ...data, nowebsite: true }));
+      } else { //둘다 있을대는 
+        setSelectedGame((prev) => ({ ...prev, ...data })); // 기존 요약 + 상세 덮어쓰기
+      }
     } catch (err) {
       console.error("상세정보 불러오기 실패:", err);
     }
@@ -110,11 +120,26 @@ export default function All() {
   };
 
   useEffect(() => {
-    //게임상세정보중 웹사이트와 줄거리는 id를 통해 받아옴 그래서 따로 상세정보가 없다면 id 불러오는 서버리스 함수 호출
-    if (selectedGame && !selectedGame.description_raw) {
+    //게임상세정보중 웹사이트와 줄거리는 id를 통해 받아옴 그래서 따로 상세정보,웹사이트가 없다면 id 불러오는 서버리스 함수 호출
+    if (
+      selectedGame && //게임 선택되고
+      !selectedGame.description_raw && //상세정보없고,
+      !selectedGame.website && //상세 웹사이트도없으면 호출하는데
+      !selectedGame.nodetail && //이미 nodetail이면 즉 둘다 없으면 호출안하도록 추가함
+      !selectedGame.nowebsite // 둘 중 하나라도 처리된 경우
+    
+    ) {
       fetchGameDetail(selectedGame.id); // 상세 정보 없으면 호출
     }
   }, [selectedGame]);
+
+  useEffect(() => {
+    const username = localStorage.getItem("username") || "guest";
+    const saved = JSON.parse(
+      localStorage.getItem(`favorites_${username}`) || "[]"
+    );
+    setFavorites(saved);
+  }, [showFavorites]);
 
   return (
     <div style={themeStyle}>

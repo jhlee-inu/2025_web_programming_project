@@ -104,27 +104,34 @@ export default function GameDetail({
           "정보 없음"
         )}
       </p>
-      {selectedGame.description_raw && (
-        <div
-          style={{
-            margin: "1.5rem 0",
-            background: darkMode ? "#232323" : "#f7f7f7",
-            borderRadius: "8px",
-            padding: "1rem 1.5rem",
-            fontSize: "1.08rem",
-            lineHeight: 1.6,
-            color: darkMode ? "#e0e0e0" : "#222",
-          }}
-        >
-          <strong>게임 상세정보:</strong>
-          <div style={{ marginTop: "0.5rem", whiteSpace: "pre-line" }}>
-            {selectedGame.description_raw}
-          </div>
+      <div
+        style={{
+          margin: "1.5rem 0",
+          background: darkMode ? "#232323" : "#f7f7f7",
+          borderRadius: "8px",
+          padding: "1rem 1.5rem",
+          fontSize: "1.08rem",
+          lineHeight: 1.6,
+          color: darkMode ? "#e0e0e0" : "#222",
+        }}
+      >
+        <strong>게임 상세정보:</strong>
+        <div style={{ marginTop: "0.5rem", whiteSpace: "pre-line" }}>
+          {selectedGame.nodetail ? (
+            <p>이 게임은 상세 정보가 없습니다.</p>
+          ) : (
+            selectedGame.description_raw
+          )}
         </div>
-      )}
-      {selectedGame.website && (
-        <div style={{ margin: "1rem 0" }}>
-          <strong>공식 홈페이지:</strong>{" "}
+      </div>
+
+      <div style={{ margin: "1rem 0" }}>
+        <strong>공식 홈페이지:</strong>{" "}
+        {selectedGame.nodetail || selectedGame.nowebsite ? (
+          <span style={{ color: darkMode ? "#e0e0e0" : "#222" }}>
+            이 게임은 웹사이트가 등록되어 있지 않습니다.
+          </span>
+        ) : (
           <a
             href={selectedGame.website}
             target="_blank"
@@ -137,8 +144,8 @@ export default function GameDetail({
           >
             {selectedGame.website}
           </a>
-        </div>
-      )}
+        )}
+      </div>
 
       <button
         onClick={toggleFavorite}

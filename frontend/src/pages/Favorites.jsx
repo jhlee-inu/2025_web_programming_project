@@ -1,24 +1,14 @@
-import { useEffect, useState } from "react";
 import GameCard from "../components/GameCard";
 
 export default function Favorites({
   games,
   showFavorites,
+  favorites, //all에서 favorites로 관리하는 즐겨찾기 상태태
   setSelectedGame,
   favoritesRef,
   darkMode,
-}) {
-  const [userFavorites, setUserFavorites] = useState([]);
-
-  useEffect(() => {
-    const username = localStorage.getItem("username") || "guest";
-    const saved = JSON.parse(
-      localStorage.getItem(`favorites_${username}`) || "[]"
-    );
-    setUserFavorites(saved);
-  }, [showFavorites]);
-
-  const displayedGames = showFavorites ? userFavorites : games;
+}) {  
+  const displayedGames = showFavorites ? favorites : games; //favorites상태 그대로받음음
 
   return (
     <div
@@ -40,7 +30,7 @@ export default function Favorites({
             <GameCard game={game} />
           </div>
         ))}
-        {showFavorites && userFavorites.length === 0 && (
+        {showFavorites && favorites.length === 0 && ( //상태그대로 받음 
           <div
             style={{
               gridColumn: "1/-1",
