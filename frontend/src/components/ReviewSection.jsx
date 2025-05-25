@@ -130,7 +130,10 @@ export default function ReviewSection({ selectedGame, darkMode }) {
               </span>
               {r.user === username && (
                 <button
-                  onClick={() => deleteReview(selectedGame.id, i)}
+                  onClick={() => {
+                    deleteReview(selectedGame.id, i);
+                    alert("리뷰가 삭제되었습니다.");
+                  }}
                   style={{
                     marginLeft: "1rem",
                     background: "transparent",

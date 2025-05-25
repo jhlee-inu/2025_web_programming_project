@@ -148,7 +148,10 @@ export default function GameDetail({
       </div>
 
       <button
-        onClick={toggleFavorite}
+        onClick={() => {
+          toggleFavorite();
+        }}
+        
         style={{
           margin: "1rem 0",
           color: darkMode ? "#f1f1f1" : "#1a1a1a",
