@@ -6,13 +6,13 @@
 ---
 
 ## 📦 프로젝트 구조
+
 project/
 ├── frontend/ # React vite 기반 프론트엔드
 ├── proxy/ # Nginx 리버스 프록시 설정
 ├── serverless/ # Vercel 서버리스 API 함수들
 ├── docker-compose.yml
 └── .gitignore
-
 
 ---
 
@@ -29,11 +29,18 @@ project/
 ## 🐳 로컬 실행 방법 (Docker 기반)
 
 > Node.js, Docker 설치 필요
-> 
+
 # 1. 이전 컨테이너 종료 및 정리
+
 docker-compose down
 
-# 2. 빌드 및 실행
+# 2. 프론트엔드 빌드 및 도커 실행
+
+frontend 루트에서 npm run build로 정적파일 배포
+dist 폴더를 proxy/static/로 이동
+
+그후 docker 실행
+
 docker-compose up --build
 
 frontend: http://localhost:8080
