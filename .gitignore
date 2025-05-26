@@ -1,6 +1,5 @@
 # ✅ node_modules, build 산출물 무시
 /frontend/node_modules/
-/frontend/dist/
 /frontend/.vite
 /frontend/.env
 /frontend/.DS_Store
@@ -12,8 +11,6 @@
 /frontend/*.log
 
 # ✅ proxy의 정적 빌드 파일 (frontend에서 복사한 것)
-# static/dist는 React/Vite build 결과물이므로 git에 포함 불필요
-/proxy/static/dist/
 /proxy/.DS_Store
 /proxy/.vscode/
 
