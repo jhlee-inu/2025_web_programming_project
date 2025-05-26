@@ -37,11 +37,9 @@ docker-compose down
 
 # 2. 프론트엔드 빌드 및 도커 실행
 
-git clone시
-frontend 루트에서 npm run build로 정적파일 배포
-dist 폴더를 proxy/static/로 이동
+git clone
 
-그후 docker 실행
+docker 실행
 
 docker-compose up --build
 
