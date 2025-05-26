@@ -1,5 +1,5 @@
 import { FaGamepad, FaStar, FaMoon, FaSun } from "react-icons/fa";
-export default function Header({
+export default function Header({ // 상단 헤더 컴포넌트
   topRef,
   favoritesRef,
   darkMode,

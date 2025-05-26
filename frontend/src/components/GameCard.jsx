@@ -1,4 +1,5 @@
-export default function GameCard({ game }) {
+export default function GameCard({ game }) { // 게임 카드 컴포넌트
+  if (!game) return null; // 게임 정보가 없으면 아무것도 렌더링하지 않음
   return (
     <div className="game-card">
       <img src={game.background_image} alt={game.name} />

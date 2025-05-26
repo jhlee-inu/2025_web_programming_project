@@ -9,20 +9,21 @@ export default function All() {
   const [games, setGames] = useState([]); //게임정보 받기
   const [selectedGame, setSelectedGame] = useState(null); //게임선택했는지 안했는지
   const [searchInput, setSearchInput] = useState(""); //값 입력했는지 안했는지
-  const [error, setError] = useState("");
+  const [error, setError] = useState(""); //에러메시지
   const [favorites, setFavorites] = useState(
     JSON.parse(localStorage.getItem("favorites") || "[]") //즐겨찾기
   );
 
   const [darkMode, setDarkMode] = useState(false); //다크모드
 
-  const topRef = useRef(null);
-  const searchRef = useRef(null);
-  const favoritesRef = useRef(null);
+  const topRef = useRef(null); // 상단으로 스크롤 이동할때 사용
+  const searchRef = useRef(null); // 검색창으로 스크롤 이동할때 사용
+  const favoritesRef = useRef(null); // 즐겨찾기 스크롤 이동할때 사용
 
-  const scrollTo = (ref) => ref.current?.scrollIntoView({ behavior: "smooth" }); //스크롤
+  const scrollTo = (ref) => ref.current?.scrollIntoView({ behavior: "smooth" }); //스크롤 이동 함수
 
   const handleSearch = async (query) => {
+    // 검색어로 게임정보 가져오기
     try {
       const url = `/api/searchGame?query=${encodeURIComponent(query)}`;
 
@@ -53,9 +54,11 @@ export default function All() {
       if (!data.description_raw && !data.website) {
         // description와 웹사이트 둘다없을때 상태는 유지하고, 표시만 다르게
         setSelectedGame((prev) => ({ ...prev, ...data, nodetail: true }));
-      } else if (!data.website) { //웹사이트만 없을때 
+      } else if (!data.website) {
+        //웹사이트만 없을때
         setSelectedGame((prev) => ({ ...prev, ...data, nowebsite: true }));
-      } else { //둘다 있을대는 
+      } else {
+        //둘다 있을때는
         setSelectedGame((prev) => ({ ...prev, ...data })); // 기존 요약 + 상세 덮어쓰기
       }
     } catch (err) {
@@ -126,10 +129,9 @@ export default function All() {
       !selectedGame.description_raw && //상세정보없고,
       !selectedGame.website && //상세 웹사이트도없으면 호출하는데
       !selectedGame.nodetail && //이미 nodetail이면 즉 둘다 없으면 호출안하도록 추가함
-      !selectedGame.nowebsite // 둘 중 하나라도 처리된 경우
-    
+      !selectedGame.nowebsite //  nodetail을 추가해도 둘다 없을때 무한 호출되어서 nowebsite도 추가함
     ) {
-      fetchGameDetail(selectedGame.id); // 상세 정보 없으면 호출
+      fetchGameDetail(selectedGame.id); // 호출
     }
   }, [selectedGame]);
 

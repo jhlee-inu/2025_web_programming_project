@@ -1,7 +1,7 @@
 export default function SearchBar({ error,setError,onSearch, value, setValue, darkMode }) {
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault(); //오류제어 폼 미제출 방지
     if (value.trim()) {
       setError("");
       onSearch(value);

@@ -10,7 +10,7 @@ const popularKeywords = [
   "FIFA 24",
   "Overwatch",
 ];
-
+ //첫페이지
 export default function FirstPage({
   darkMode,
   showFavorites,

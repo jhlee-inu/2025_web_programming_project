@@ -1,5 +1,5 @@
-export default function GameDetail({
-  selectedGame,
+export default function GameDetail({ // 게임 상세 정보 컴포넌트
+  selectedGame, 
   darkMode,
   handleBack,
   toggleFavorite,

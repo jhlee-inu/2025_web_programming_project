@@ -3,12 +3,12 @@ import GameCard from "../components/GameCard";
 export default function Favorites({
   games,
   showFavorites,
-  favorites, //all에서 favorites로 관리하는 즐겨찾기 상태태
+  favorites, //all.jsx에서 favorites로 관리하는 즐겨찾기 상태
   setSelectedGame,
   favoritesRef,
   darkMode,
 }) {  
-  const displayedGames = showFavorites ? favorites : games; //favorites상태 그대로받음음
+  const displayedGames = showFavorites ? favorites : games; //favorites상태 그대로받음
 
   return (
     <div

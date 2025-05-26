@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-export default function ReviewSection({ selectedGame, darkMode }) {
+export default function ReviewSection({ selectedGame, darkMode }) {// 리뷰 섹션 컴포넌트
   const [username, setUsername] = useState("");
   const [review, setReview] = useState("");
 
