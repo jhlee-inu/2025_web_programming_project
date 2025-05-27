@@ -7,6 +7,8 @@
 
 ## 프로젝트 구조
 
+배포:github pages
+https://jhlee-inu.github.io/2025_web_programming_project/
 project/
 ├── frontend/ # React vite 기반 프론트엔드
 ├── proxy/ # Nginx 리버스 프록시 설정
