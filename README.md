@@ -5,7 +5,7 @@
 
 ---
 
-## 📦 프로젝트 구조
+## 프로젝트 구조
 
 project/
 ├── frontend/ # React vite 기반 프론트엔드
@@ -16,31 +16,11 @@ project/
 
 ---
 
-## 🚀 주요 기능
+## 주요 기능
 
 - RAWG API 기반 게임 검색
 - 상세 정보 확인 (플랫폼, 장르, 출시일 등)
 - 게임 즐겨찾기 및 리뷰 로컬 저장
 - Docker 기반 프록시 서버
 - Vercel 서버리스 함수 호출
-- 추가 기능 다크모드,검색 오류제어, 상세정보가 없을때의 오류제어 
-
----
-
-## 🐳 로컬 실행 방법 (Docker 기반)
-
-> Node.js, Docker 설치 필요
-
-# 1. 이전 컨테이너 종료 및 정리
-
-docker-compose down
-
-# 2. 프론트엔드 빌드 및 도커 실행
-
-git clone
-
-docker 실행
-
-docker-compose up --build
-
-frontend: http://localhost:8080
+- 추가 기능 다크모드,검색 오류제어, 상세정보가 없을때의 오류제어
