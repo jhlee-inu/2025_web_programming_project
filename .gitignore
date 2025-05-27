@@ -4,6 +4,7 @@
 /frontend/.env
 /frontend/.DS_Store
 /frontend/.eslintcache
+/proxy/static/dist
 
 # ✅ frontend IDE 및 시스템 파일
 /frontend/.vscode/
