@@ -1,4 +1,4 @@
-name: Build and Push Dist
+name: Build and Push Dist 
 
 on:
   push:
