@@ -1,4 +1,4 @@
-name: Build and Push Dist 
+name: Build and Push Dist
 
 on:
   push:
@@ -18,7 +18,7 @@ jobs:
           node-version: 18
 
       - name: Install and Build
-        working-directory: frontend # 
+        working-directory: frontend #
         run: |
           npm ci
           npm run build
@@ -26,4 +26,6 @@ jobs:
       - name: Copy dist to proxy/static/dist
         run: |
           rm -rf proxy/static/dist
+          mkdir -p proxy/static/dist 
+          # Copy the built frontend files to the proxy static directory
           cp -r frontend/dist proxy/static/dist
