@@ -25,7 +25,7 @@ export default function All() {
   const handleSearch = async (query) => {
     // 검색어로 게임정보 가져오기
     try {
-      const url = `/api/searchGame?query=${encodeURIComponent(query)}`;
+      const url = `${import.meta.env.VITE_API_URL}/api/searchGame?query=${encodeURIComponent(query)}`;
 
       const res = await fetch(url);
       if (!res.ok) throw new Error("API 호출 실패");
@@ -46,7 +46,9 @@ export default function All() {
 
   const fetchGameDetail = async (id) => {
     try {
-      const res = await fetch(`/api/getGameDetail?id=${id}`);
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/getGameDetail?id=${id}`
+      );
       const data = await res.json();
 
       if (!id || !data || data.error) return;
