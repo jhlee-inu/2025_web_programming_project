@@ -8,11 +8,15 @@
 ## 프로젝트 구조
 
 project/
+
 ├── frontend/ # React vite 기반 프론트엔드
+
 ├── proxy/ # Nginx 리버스 프록시 설정
 
 ├── serverless/ # Vercel 서버리스 API 함수들
+
 ├── docker-compose.yml
+
 └── .gitignore
 
 ---
